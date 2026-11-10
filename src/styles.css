@@ -826,3 +826,5 @@ h1, h2, h3, p { margin-top: 0; }
 .claim-source { margin-inline: 2px; color: #f0c664; font: 700 8px var(--mono); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 .kit-advice .claim-source, .power-note .claim-source, .hardware-step .claim-source, .safety-strip .claim-source, .signal-foot .claim-source { color: var(--berry-dark); font-size: inherit; }
 .claim-source:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+.trial-storage-note { margin: 12px 0 0; color: #637067; font-size: 11px; }

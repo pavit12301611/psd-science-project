@@ -561,11 +561,18 @@ function Dashboard() {
 }
 
 function Investigation() {
-  const [trials, setTrials] = useState<Record<DyeId, string[]>>({
-    blackberry: ['', '', ''],
-    blueberry: ['', '', ''],
-    jamun: ['', '', ''],
+  const [trials, setTrials] = useState<Record<DyeId, string[]>>(() => {
+    const empty: Record<DyeId, string[]> = { blackberry: ['', '', ''], blueberry: ['', '', ''], jamun: ['', '', ''] };
+    try {
+      const saved = JSON.parse(localStorage.getItem('berry-trials-v1') || 'null');
+      if (saved && dyes.every(({ id }) => Array.isArray(saved[id]) && saved[id].length === 3 && saved[id].every((v: unknown) => typeof v === 'string'))) return saved;
+    } catch { /* Storage may be unavailable or contain invalid data. */ }
+    return empty;
   });
+
+  useEffect(() => {
+    try { localStorage.setItem('berry-trials-v1', JSON.stringify(trials)); } catch { /* The guide remains usable without storage. */ }
+  }, [trials]);
 
   const averages = useMemo(() => {
     const result = {} as Record<DyeId, { mean: number | null; count: number }>;
@@ -633,6 +640,7 @@ function Investigation() {
                 </div>
               );
             })}
+            <p className="trial-storage-note">Trial readings are saved on this device. Clearing browser or app data removes them.</p>
             <div className="trial-card-foot"><span>{readingCount} reading{readingCount === 1 ? '' : 's'} logged</span><button type="button" onClick={clearTrials}>Clear entries <span aria-hidden="true">×</span></button></div>
           </div>
           <div className="comparison-card">

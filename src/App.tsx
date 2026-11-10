@@ -77,108 +77,24 @@ function Header() {
   );
 }
 
-function HeroIllustration() {
+function HeroPhoto() {
   return (
-    <figure className="hero-figure">
+    <figure className="hero-figure hero-photo">
       <div className="figure-label-row">
-        <span><b>FIG. 01</b> / CELL CROSS-SECTION</span>
-        <span>NOT TO SCALE</span>
+        <span><b>FIG. 01</b> / BENCH PROTOTYPE</span>
+        <span>ILLUSTRATIVE BUILD</span>
       </div>
-      <svg className="hero-svg" viewBox="0 0 720 500" role="img" aria-labelledby="hero-figure-title hero-figure-desc">
-        <title id="hero-figure-title">Berry dye-sensitized solar cell diagram</title>
-        <desc id="hero-figure-desc">Light reaches berry pigment attached to porous titanium dioxide. Electrons travel through conductive glass and an external circuit while electrolyte helps restore the dye.</desc>
-        <defs>
-          <pattern id="hero-grid" width="28" height="28" patternUnits="userSpaceOnUse">
-            <path d="M28 0H0V28" fill="none" stroke="#e7e3d8" strokeWidth="1" />
-          </pattern>
-          <pattern id="tio2-dots" width="19" height="16" patternUnits="userSpaceOnUse">
-            <circle cx="4" cy="5" r="2.2" fill="#65816b" />
-            <circle cx="14" cy="12" r="2.4" fill="#829778" />
-          </pattern>
-          <marker id="electron-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M0 0 10 5 0 10Z" fill="#276052" />
-          </marker>
-        </defs>
-        <rect width="720" height="500" fill="#fbfaf5" />
-        <rect width="720" height="500" fill="url(#hero-grid)" opacity=".72" />
-        <path d="M25 42H695" stroke="#d4d0c5" strokeWidth="1" />
-        <text x="31" y="29" className="svg-mono">PIGMENT → PHOTOANODE → CIRCUIT</text>
-        <text x="650" y="29" textAnchor="end" className="svg-mono">01 / 05</text>
-
-        <g aria-hidden="true">
-          <circle cx="611" cy="101" r="30" fill="#e7b747" />
-          <path d="M611 53v-13M611 162v-13M563 101h-13M672 101h-13M577 67l-9-9M654 144l-9-9M645 67l9-9M568 144l9-9" stroke="#b88025" strokeWidth="3" strokeLinecap="round" />
-          <text x="611" y="151" textAnchor="middle" className="svg-mono svg-amber">PHOTONS</text>
-          <path d="M585 137 546 231M611 140v91M637 137l40 94" stroke="#d39b36" strokeWidth="2" strokeDasharray="5 7" />
-        </g>
-
-        <g className="berry-drawing" aria-hidden="true">
-          <path d="M118 100c-3-17 8-31 25-34-3 13-9 21-20 25 15-12 30-15 42-8-8 12-22 17-39 14" fill="#74856c" stroke="#435947" strokeWidth="2" />
-          <circle cx="117" cy="144" r="31" fill="#9d3545" />
-          <circle cx="91" cy="166" r="27" fill="#b13d4c" />
-          <circle cx="142" cy="166" r="27" fill="#a93a4a" />
-          <path d="M71 176c8 34 22 52 48 59 26-6 43-27 48-57-12 7-28 8-48 0-18 8-34 6-48-2Z" fill="#9c3344" />
-          <circle cx="103" cy="144" r="2.4" fill="#f1d5a2" /><circle cx="126" cy="156" r="2.4" fill="#f1d5a2" />
-          <circle cx="86" cy="164" r="2.2" fill="#f1d5a2" /><circle cx="109" cy="176" r="2.2" fill="#f1d5a2" />
-          <circle cx="138" cy="176" r="2.2" fill="#f1d5a2" /><circle cx="124" cy="198" r="2.3" fill="#f1d5a2" />
-          <circle cx="98" cy="203" r="2.3" fill="#f1d5a2" />
-          <path d="M99 247c4-8 10-10 16-10 6 0 12 2 16 10l-16 23Z" fill="#a9434d" />
-          <path d="M108 274v-12M119 274v-12M130 274v-12" stroke="#a9434d" strokeWidth="2" />
-          <text x="43" y="316" className="svg-mono">BERRY EXTRACT</text>
-          <text x="43" y="333" className="svg-small">the light-harvesting dye</text>
-          <path d="M169 240C198 247 218 269 252 293" fill="none" stroke="#a8434e" strokeWidth="2" strokeDasharray="3 6" />
-          <circle cx="211" cy="260" r="4" fill="#a8434e" />
-        </g>
-
-        <g className="circuit" aria-hidden="true">
-          <path d="M262 260H220V190H434" fill="none" stroke="#276052" strokeWidth="3" />
-          <path d="m434 190 8-10 8 20 8-20 8 20 8-20 8 10H644V333H676" fill="none" stroke="#276052" strokeWidth="3" markerMid="url(#electron-arrow)" />
-          <path d="M295 190H420M510 190H624" fill="none" stroke="#276052" strokeWidth="3" markerEnd="url(#electron-arrow)" />
-          <circle cx="335" cy="190" r="5" fill="#f0c14e" stroke="#276052" strokeWidth="2" />
-          <circle cx="566" cy="190" r="5" fill="#f0c14e" stroke="#276052" strokeWidth="2" />
-          <text x="474" y="169" textAnchor="middle" className="svg-mono svg-green">EXTERNAL CIRCUIT / e⁻</text>
-          <text x="470" y="222" textAnchor="middle" className="svg-tiny">LOAD</text>
-        </g>
-
-        <g className="cell-stack" aria-hidden="true">
-          <rect x="255" y="250" width="425" height="12" fill="#d5e4e0" stroke="#456c66" strokeWidth="1.5" />
-          <rect x="255" y="262" width="425" height="8" fill="#8eb2a9" stroke="#456c66" strokeWidth="1.2" />
-          <rect x="255" y="270" width="425" height="43" fill="#e1eadc" stroke="#72856f" strokeWidth="1.2" />
-          <rect x="255" y="270" width="425" height="43" fill="url(#tio2-dots)" opacity=".88" />
-          <g fill="#ab4350" stroke="#f5e8d2" strokeWidth="1">
-            <circle cx="310" cy="279" r="4" /><circle cx="356" cy="299" r="4" /><circle cx="405" cy="282" r="4" />
-            <circle cx="453" cy="302" r="4" /><circle cx="500" cy="280" r="4" /><circle cx="550" cy="298" r="4" />
-            <circle cx="602" cy="280" r="4" /><circle cx="647" cy="301" r="4" />
-          </g>
-          <rect x="255" y="313" width="425" height="30" fill="#f1e3bf" stroke="#ab9561" strokeWidth="1.2" />
-          <circle cx="337" cy="327" r="3" fill="#b28e3f" /><circle cx="431" cy="331" r="3" fill="#b28e3f" />
-          <circle cx="526" cy="324" r="3" fill="#b28e3f" /><circle cx="614" cy="331" r="3" fill="#b28e3f" />
-          <rect x="255" y="343" width="425" height="9" fill="#414f49" />
-          <rect x="255" y="352" width="425" height="13" fill="#d5e4e0" stroke="#456c66" strokeWidth="1.5" />
-          <text x="286" y="259" className="svg-layer-label">FTO GLASS</text>
-          <text x="279" y="298" className="svg-layer-label">POROUS TiO₂ + BERRY DYE</text>
-          <text x="279" y="333" className="svg-layer-label">ELECTROLYTE</text>
-          <text x="279" y="361" className="svg-layer-label svg-light-text">COUNTER ELECTRODE</text>
-        </g>
-
-        <g className="callout-labels" aria-hidden="true">
-          <path d="M247 265h-34v-20h-26" fill="none" stroke="#758179" strokeWidth="1.3" />
-          <text x="31" y="239" className="svg-mono">COLLECT</text>
-          <text x="31" y="255" className="svg-small">conductive coating</text>
-          <path d="M681 295h19v-26" fill="none" stroke="#758179" strokeWidth="1.3" />
-          <text x="695" y="255" textAnchor="end" className="svg-mono">INJECT</text>
-          <text x="695" y="271" textAnchor="end" className="svg-small">electron enters TiO₂</text>
-          <path d="M675 349h21v27" fill="none" stroke="#758179" strokeWidth="1.3" />
-          <text x="695" y="394" textAnchor="end" className="svg-mono">REGENERATE</text>
-          <text x="695" y="410" textAnchor="end" className="svg-small">redox cycle closes</text>
-        </g>
-
-        <path d="M30 450H690" stroke="#d4d0c5" strokeWidth="1" />
-        <text x="31" y="473" className="svg-mono">LIGHT IN</text>
-        <text x="360" y="473" textAnchor="middle" className="svg-mono">ELECTRON FLOW OUT</text>
-        <text x="690" y="473" textAnchor="end" className="svg-mono">TINY SIGNAL / MEASURE IT</text>
-      </svg>
-      <figcaption><span>01</span> Berry pigment is one layer in a complete electrochemical cell—not a power source on its own.</figcaption>
+      <div className="hero-photo-frame">
+        <img
+          className="hero-photo-image"
+          src="/images/berry-dssc-hero.jpg"
+          alt="Illustrative close-up of a small berry-stained DSSC cell held by binder clips, with test leads, filtered berry extract and a multimeter on a lab bench."
+          loading="eager"
+        />
+        <span className="photo-chip photo-chip-top">DSSC / SMALL-SCALE CELL</span>
+        <span className="photo-chip photo-chip-bottom">BERRY DYE ≠ POWER SOURCE</span>
+      </div>
+      <figcaption><span>01</span>Generated visual of the proposed bench build. Replace it with your own cell photograph for the final exhibition.</figcaption>
     </figure>
   );
 }
@@ -261,6 +177,34 @@ function ExplodedCellIllustration() {
   );
 }
 
+function ComponentsPhoto() {
+  return (
+    <figure className="components-photo-card">
+      <div className="components-photo-frame">
+        <img
+          src="/images/dssc-components.jpg"
+          alt="Illustrative overhead layout of conductive glass, berry dye materials, small electronics, breadboard, meter and safety equipment for a DSSC school build."
+          loading="lazy"
+        />
+        <span className="photo-chip photo-chip-top">FIG. 02 / MATERIALS ON THE BENCH</span>
+      </div>
+      <figcaption className="components-photo-caption">
+        <div>
+          <span className="panel-kicker">A BUILD IS A SET OF PARTS</span>
+          <h3>Cell chemistry on one side. Measurement tools on the other.</h3>
+          <p>This generated layout is a visual checklist, not a promise that every kit includes every item. Compare each real kit with the linked bill of materials before buying.</p>
+        </div>
+        <ul>
+          <li><i className="component-dot dot-berry" /> Conductive glass + TiO₂</li>
+          <li><i className="component-dot dot-sun" /> Berry extract + electrolyte</li>
+          <li><i className="component-dot dot-leaf" /> UNO, LDR + buffer circuit</li>
+          <li><i className="component-dot dot-ink" /> Meter, leads + safety gear</li>
+        </ul>
+      </figcaption>
+    </figure>
+  );
+}
+
 function CellAnatomy() {
   const layers = [
     { n: '01', name: 'Conductive glass', label: 'FTO / ITO current collector', text: 'Lets light through and carries electrons from the photoanode into the wire.' },
@@ -295,6 +239,7 @@ function CellAnatomy() {
             ))}
           </div>
         </div>
+        <ComponentsPhoto />
         <aside className="kit-advice">
           <div className="advice-stamp">FIRST BUILD<br />TIP</div>
           <p><strong>Choose a kit with pre-coated TiO₂ and conductive glass.</strong> Ordinary window glass and random white TiO₂ powder do not make a reliable photoanode; electrode preparation and the kit’s electrolyte matter. <a href="#source-science">[S1]</a></p>
@@ -624,31 +569,16 @@ function Investigation() {
 
 function ExhibitionBoard() {
   return (
-    <div className="exhibit-board-wrap">
-      <div className="board-topline"><span>MOCK-UP / EXHIBITION TABLE</span><span>LEFT → RIGHT</span></div>
-      <div className="poster-board">
-        <div className="poster-title"><span>SCIENCE FAIR / 01</span><b>FROM BERRY<br />TO CURRENT</b></div>
-        <div className="poster-flow"><span>LIGHT</span><i>→</i><span>DYE</span><i>→</i><span>DATA</span></div>
-        <div className="poster-main">
-          <div className="poster-cell-demo">
-            <span className="poster-mini-label">CELL CUTAWAY</span>
-            <div className="mini-stack"><i /><i /><i /><i /><i /></div>
-            <span className="mini-electron">e⁻ →</span>
-          </div>
-          <div className="poster-data-demo">
-            <span className="poster-mini-label">YOUR RESULTS</span>
-            <svg viewBox="0 0 160 88" role="img" aria-label="Empty placeholder chart for student data">
-              <path d="M24 10v60h126M24 49h126M24 29h126" fill="none" stroke="#b9b6aa" strokeWidth="1" />
-              <text x="85" y="44" textAnchor="middle">ADD YOUR DATA</text>
-            </svg>
-          </div>
-        </div>
-        <div className="poster-berry-row"><span>BLACKBERRY</span><i className="berry-swatch berry-a" /><span>BLUEBERRY</span><i className="berry-swatch berry-b" /><span>JAMUN</span><i className="berry-swatch berry-c" /></div>
-        <div className="poster-bottom"><b>CLAIM:</b> Berry pigment helps harvest light; the whole cell makes the signal.</div>
-      </div>
-      <div className="table-shadow" aria-hidden="true"><span /><span /><span /></div>
-      <p className="board-caption">A transparent cell holder, real dye samples, labelled electron-flow arrows and the student’s own measured graph.</p>
-    </div>
+    <figure className="exhibit-board-wrap">
+      <div className="board-topline"><span>FIG. 06 / EXHIBITION LAYOUT</span><span>ILLUSTRATIVE SCENE</span></div>
+      <img
+        className="science-fair-image"
+        src="/images/science-fair-demo.jpg"
+        alt="Illustrative school exhibit showing a small berry DSSC in a clear holder, berry samples, a lamp, wiring and a laptop with an unlabeled line plot."
+        loading="lazy"
+      />
+      <figcaption className="board-caption">Generated display mock-up. The laptop trace is decorative only—show your own measured data, labelled cell diagram and real dye samples.</figcaption>
+    </figure>
   );
 }
 
@@ -875,7 +805,7 @@ export default function App() {
                 <div><b>₹</b><span>itemized build<br />budget included</span></div>
               </div>
             </div>
-            <HeroIllustration />
+            <HeroPhoto />
           </div>
           <div className="hero-bottom-rule shell"><span>LIGHT ENERGY</span><i /><span>PHOTOELECTROCHEMISTRY</span><i /><span>MEASURED OUTPUT</span></div>
         </section>

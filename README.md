@@ -1,6 +1,6 @@
 # Berry to current — DSSC field guide
 
-A responsive, visual science-project website built with React, TypeScript, Vite and plain CSS. The project is a student-facing guide to a berry-dye-sensitized solar cell (DSSC), with a labelled cell illustration, honest simulated dashboard, editable experiment chart, budget calculator and linked science/price sources.
+A responsive, visual science-project website built with React, TypeScript, Vite and plain CSS. The project is a student-facing guide to a berry-dye-sensitized solar cell (DSSC), with labelled technical diagrams, custom-generated illustrative lab photographs, an honest simulated dashboard, editable experiment chart, budget calculator and linked science/price sources. Generated images are visual mock-ups only; they are not evidence of a real build or measured output.
 
 ## Run locally
 

@@ -8,6 +8,41 @@ const dyes = [
 
 type DyeId = (typeof dyes)[number]['id'];
 
+type CellLayerId = 'glass' | 'tio2' | 'dye' | 'electrolyte' | 'counter';
+
+const cellLayers = [
+  {
+    id: 'glass', n: '01', name: 'Conductive glass (FTO / ITO)', label: 'Transparent current collector',
+    text: 'Light passes through the glass. A very thin conductive coating on it carries electrons from the TiO₂ photoanode into the external wire.',
+    check: 'Identify the coated face using the kit directions and a multimeter. Do not scratch or rub the coating.',
+    analogy: 'A clear road that lets light in and gives electrons a route out.',
+  },
+  {
+    id: 'tio2', n: '02', name: 'Porous titanium dioxide (TiO₂)', label: 'Semiconductor scaffold',
+    text: 'The nanoporous surface gives many dye molecules a place to attach. After injection, electrons move through this TiO₂ network to the conductive glass.',
+    check: 'Use a pre-coated electrode for a first build. A random powder layer is not the same as a porous, well-connected film.',
+    analogy: 'A very fine scaffold that holds lots of light-catching dye.',
+  },
+  {
+    id: 'dye', n: '03', name: 'Berry pigment', label: 'Light sensitizer',
+    text: 'Pigment molecules absorb photons and become excited. An excited dye can inject an electron into TiO₂; the berry is not the energy source by itself.',
+    check: 'Filter the extract and keep the soak time the same for every sample. Record which fruit produced each dye.',
+    analogy: 'An antenna that catches light and hands off an electron.',
+  },
+  {
+    id: 'electrolyte', n: '04', name: 'Electrolyte', label: 'Iodide / triiodide redox mediator',
+    text: 'The redox couple helps return an electron to the oxidized dye. At the counter electrode, triiodide is reduced and the charge cycle can continue.',
+    check: 'Use only the kit solution and follow its safety sheet. A teacher supervises handling; avoid skin and eye contact.',
+    analogy: 'A chemical shuttle that helps reset the dye for another cycle.',
+  },
+  {
+    id: 'counter', n: '05', name: 'Counter electrode', label: 'Carbon / catalytic surface',
+    text: 'Electrons arriving through the external circuit reach this electrode. Its surface supports the electrolyte reaction that closes the loop.',
+    check: 'Keep contact points accessible and assemble the two plates exactly as the kit specifies.',
+    analogy: 'The return station where the external electron meets the cell chemistry again.',
+  },
+] as const;
+
 const links = {
   nisenet: 'https://www.nisenet.org/sites/default/files/catalog/uploads/5553/solarcell_facilitator__guide.pdf',
   vanderbilt: 'https://www.vanderbilt.edu/youngscientistjournal/article/dye-sensitized-solar-cells-optimization-of-parameters-to-maximize-efficiency/',
@@ -112,11 +147,11 @@ function SectionHeading({ index, eyebrow, title, copy, light = false }: { index:
   );
 }
 
-function ExplodedCellIllustration() {
+function ExplodedCellIllustration({ activeLayer }: { activeLayer: CellLayerId }) {
   return (
     <div className="exploded-figure-wrap">
       <div className="exploded-caption"><span>FIG. 02 / EXPLODED VIEW</span><span>FIVE WORKING PARTS</span></div>
-      <svg className="exploded-svg" viewBox="0 0 560 420" role="img" aria-labelledby="exploded-title exploded-desc">
+      <svg className={`exploded-svg active-${activeLayer}`} viewBox="0 0 560 420" role="img" aria-labelledby="exploded-title exploded-desc">
         <title id="exploded-title">Exploded layers of a dye-sensitized solar cell</title>
         <desc id="exploded-desc">A separated view of conductive glass, porous titanium dioxide with dye, electrolyte, counter electrode and a second conductive glass plate.</desc>
         <defs>
@@ -131,24 +166,26 @@ function ExplodedCellIllustration() {
         <path d="M283 61v300" stroke="#98a296" strokeDasharray="3 7" strokeWidth="1.5" />
         <path d="M274 82h18M274 133h18M274 197h18M274 258h18M274 315h18M274 364h18" stroke="#98a296" strokeWidth="1.2" />
 
-        <g>
+        <g className={`diagram-part glass-part${activeLayer === 'glass' ? ' is-active' : ''}`}>
           <rect x="110" y="54" width="345" height="27" fill="#c9dcd7" stroke="#456c66" strokeWidth="1.5" />
           <rect x="110" y="84" width="345" height="8" fill="#83aaa1" stroke="#456c66" strokeWidth="1.2" />
           <path d="M78 67h26M457 67h27" stroke="#6f7a70" />
           <circle cx="60" cy="67" r="12" fill="#163d35" /><text x="60" y="71" textAnchor="middle" className="svg-number">01</text>
           <text x="490" y="63" className="svg-mono">FTO GLASS</text><text x="490" y="78" className="svg-small">transparent collector</text>
         </g>
-        <g>
+        <g className={`diagram-part tio2-part${activeLayer === 'tio2' ? ' is-active' : ''}`}>
           <rect x="110" y="111" width="345" height="42" fill="#e4eadc" stroke="#788b74" strokeWidth="1.3" />
           <rect x="110" y="111" width="345" height="42" fill="url(#particle-pattern)" />
-          <circle cx="170" cy="119" r="4" fill="#ad424e" /><circle cx="228" cy="139" r="4" fill="#ad424e" />
-          <circle cx="302" cy="122" r="4" fill="#ad424e" /><circle cx="372" cy="142" r="4" fill="#ad424e" />
-          <circle cx="420" cy="120" r="4" fill="#ad424e" />
+          <g className={`dye-part${activeLayer === 'dye' ? ' is-active' : ''}`}>
+            <circle cx="170" cy="119" r="4" fill="#ad424e" /><circle cx="228" cy="139" r="4" fill="#ad424e" />
+            <circle cx="302" cy="122" r="4" fill="#ad424e" /><circle cx="372" cy="142" r="4" fill="#ad424e" />
+            <circle cx="420" cy="120" r="4" fill="#ad424e" />
+          </g>
           <path d="M78 132h26M457 132h27" stroke="#6f7a70" />
           <circle cx="60" cy="132" r="12" fill="#163d35" /><text x="60" y="136" textAnchor="middle" className="svg-number">02</text>
           <text x="490" y="128" className="svg-mono">TiO₂ + DYE</text><text x="490" y="143" className="svg-small">porous semiconductor</text>
         </g>
-        <g>
+        <g className={`diagram-part electrolyte-part${activeLayer === 'electrolyte' ? ' is-active' : ''}`}>
           <rect x="110" y="178" width="345" height="29" fill="#f0e3c2" stroke="#aa9565" strokeWidth="1.3" />
           <circle cx="190" cy="192" r="3" fill="#b69a55" /><circle cx="270" cy="193" r="3" fill="#b69a55" />
           <circle cx="353" cy="190" r="3" fill="#b69a55" /><circle cx="412" cy="195" r="3" fill="#b69a55" />
@@ -156,13 +193,13 @@ function ExplodedCellIllustration() {
           <circle cx="60" cy="192" r="12" fill="#163d35" /><text x="60" y="196" textAnchor="middle" className="svg-number">03</text>
           <text x="490" y="189" className="svg-mono">ELECTROLYTE</text><text x="490" y="204" className="svg-small">redox mediator</text>
         </g>
-        <g>
+        <g className={`diagram-part counter-part${activeLayer === 'counter' ? ' is-active' : ''}`}>
           <rect x="110" y="233" width="345" height="13" fill="#414f49" />
           <path d="M78 239h26M457 239h27" stroke="#6f7a70" />
           <circle cx="60" cy="239" r="12" fill="#163d35" /><text x="60" y="243" textAnchor="middle" className="svg-number">04</text>
           <text x="490" y="236" className="svg-mono">COUNTER ELECTRODE</text><text x="490" y="251" className="svg-small">carbon / catalyst surface</text>
         </g>
-        <g>
+        <g className={`diagram-part glass-part${activeLayer === 'glass' ? ' is-active' : ''}`}>
           <rect x="110" y="274" width="345" height="25" fill="#c9dcd7" stroke="#456c66" strokeWidth="1.5" />
           <rect x="110" y="301" width="345" height="8" fill="#83aaa1" stroke="#456c66" strokeWidth="1.2" />
           <path d="M78 287h26M457 287h27" stroke="#6f7a70" />
@@ -206,13 +243,8 @@ function ComponentsPhoto() {
 }
 
 function CellAnatomy() {
-  const layers = [
-    { n: '01', name: 'Conductive glass', label: 'FTO / ITO current collector', text: 'Lets light through and carries electrons from the photoanode into the wire.' },
-    { n: '02', name: 'Porous titanium dioxide', label: 'TiO₂ semiconductor scaffold', text: 'A high-area surface for dye molecules; it accepts and transports injected electrons.' },
-    { n: '03', name: 'Berry pigment', label: 'Natural sensitizer', text: 'Anthocyanin-rich dye absorbs part of the incoming light and becomes excited.' },
-    { n: '04', name: 'Electrolyte', label: 'Iodide / triiodide redox pair', text: 'Transfers charge to help restore the oxidized dye and complete the cycle.' },
-    { n: '05', name: 'Counter electrode', label: 'Carbon / catalytic surface', text: 'Closes the electrochemical circuit so the redox mediator can be regenerated.' },
-  ];
+  const [activeLayer, setActiveLayer] = useState<CellLayerId>('glass');
+  const selected = cellLayers.find((layer) => layer.id === activeLayer) ?? cellLayers[0];
 
   return (
     <section className="section anatomy-section" id="cell">
@@ -221,28 +253,41 @@ function CellAnatomy() {
           index="01"
           eyebrow="A cell, not a juice trick"
           title="Five layers. One electron loop."
-          copy="The berry supplies a sensitizing pigment. The complete DSSC turns light into a small electrical signal through photo-excitation and redox chemistry."
+          copy="Tap a layer to highlight it in the cutaway and see its job, a practical check, and a simple mental model. The berry supplies pigment; the complete DSSC converts light into a small electrical signal."
         />
         <div className="anatomy-grid">
-          <ExplodedCellIllustration />
-          <div className="layer-list">
-            {layers.map((layer) => (
-              <article className="layer-row" key={layer.n}>
+          <ExplodedCellIllustration activeLayer={activeLayer} />
+          <div className="layer-list" role="group" aria-label="Select a dye-sensitized solar cell layer to explore">
+            <div className="layer-list-head"><span>SELECT A PART</span><span>5 LAYERS</span></div>
+            {cellLayers.map((layer) => (
+              <button
+                className={`layer-row${activeLayer === layer.id ? ' is-selected' : ''}`}
+                type="button"
+                key={layer.id}
+                aria-pressed={activeLayer === layer.id}
+                onClick={() => setActiveLayer(layer.id)}
+              >
                 <span className="layer-number">{layer.n}</span>
-                <div>
-                  <h3>{layer.name}</h3>
-                  <p className="layer-label">{layer.label}</p>
-                  <p className="layer-copy">{layer.text}</p>
-                </div>
+                <span className="layer-row-copy">
+                  <b>{layer.name}</b>
+                  <span className="layer-label">{layer.label}</span>
+                </span>
                 <span className="layer-dot" aria-hidden="true" />
-              </article>
+              </button>
             ))}
+            <aside className="layer-explainer" aria-live="polite">
+              <div className="layer-explainer-head"><span>PART {selected.n} / WHAT IT DOES</span><span>SELECTED</span></div>
+              <h3>{selected.name}</h3>
+              <p>{selected.text}</p>
+              <div className="layer-inspect"><b>CHECK / CARE</b><span>{selected.check}</span></div>
+              <div className="layer-analogy"><b>MENTAL MODEL</b><span>{selected.analogy}</span></div>
+            </aside>
           </div>
         </div>
         <ComponentsPhoto />
         <aside className="kit-advice">
           <div className="advice-stamp">FIRST BUILD<br />TIP</div>
-          <p><strong>Choose a kit with pre-coated TiO₂ and conductive glass.</strong> Ordinary window glass and random white TiO₂ powder do not make a reliable photoanode; electrode preparation and the kit’s electrolyte matter. <a href="#source-science">[S1]</a></p>
+          <p><strong>Choose a kit with pre-coated TiO₂ and conductive glass.</strong> Ordinary window glass and random white TiO₂ powder do not make a reliable photoanode; electrode preparation and the kit’s electrolyte matter. <a className="claim-source" href="#source-science">[S1]</a></p>
           <a className="text-link" href="#budget">See the kit allowance <span aria-hidden="true">↗</span></a>
         </aside>
       </div>
@@ -251,41 +296,91 @@ function CellAnatomy() {
 }
 
 function Mechanism() {
+  const [activeIndex, setActiveIndex] = useState(0);
   const steps = [
-    { num: '01', title: 'Catch a photon', text: 'Berry dye attached to TiO₂ absorbs light and reaches an excited state.', icon: 'sun' },
-    { num: '02', title: 'Inject an electron', text: 'The excited dye transfers an electron into the TiO₂ scaffold; the dye is left oxidized.', icon: 'spark' },
-    { num: '03', title: 'Do circuit work', text: 'The electron reaches the conductive glass, passes through the external circuit and returns at the counter electrode.', icon: 'circuit' },
-    { num: '04', title: 'Reset the dye', text: 'The electrolyte’s redox couple helps regenerate the dye and closes the electrochemical cycle.', icon: 'cycle' },
+    {
+      num: '01', title: 'Catch a photon', text: 'The berry dye absorbs light.', detail: 'A photon gives energy to a dye molecule adsorbed on the TiO₂ surface. The molecule moves from its ground state to an excited state; the incoming light, not the fruit, supplies the energy.', equation: 'S + hν → S*', route: 'photon → dye', hinglish: 'Sunlight ki photon energy dye ko excite karti hai.', judgeLine: '“The berry pigment is the light sensitizer, not a battery.”', icon: 'sun',
+    },
+    {
+      num: '02', title: 'Inject an electron', text: 'Excited dye hands off charge.', detail: 'The excited dye transfers an electron into the conduction band of porous TiO₂. The dye is now oxidized and needs to be regenerated by the electrolyte.', equation: 'S* → S⁺ + e⁻(TiO₂)', route: 'dye → TiO₂', hinglish: 'Excited dye apna electron TiO₂ ko transfer karta hai.', judgeLine: '“TiO₂ transports the electron; the berry dye helps absorb visible light.”', icon: 'spark',
+    },
+    {
+      num: '03', title: 'Do circuit work', text: 'Electron travels through the wire.', detail: 'Electrons move through the TiO₂ network to the conductive glass, then through an external path and load to the counter electrode. This external flow is the current you can measure.', equation: 'photoanode → load → counter electrode', route: 'FTO → load', hinglish: 'Electron external wire aur load se guzarta hai—yahin current measure hota hai.', judgeLine: '“The measurable current comes from the complete cell connected to a circuit.”', icon: 'circuit',
+    },
+    {
+      num: '04', title: 'Restore the dye', text: 'Electrolyte closes the cycle.', detail: 'The iodide/triiodide redox mediator helps return an electron to the oxidized dye. At the counter electrode, triiodide is reduced. The cycle can repeat while light is available.', equation: 'S⁺ → S  ·  I₃⁻ + 2e⁻ → 3I⁻', route: 'redox → reset', hinglish: 'Electrolyte oxidized dye ko reset karne mein help karta hai.', judgeLine: '“The electrolyte regenerates the dye; it is an essential part of the cell.”', icon: 'cycle',
+    },
   ] as const;
+  const active = steps[activeIndex];
+  const goTo = (direction: -1 | 1) => setActiveIndex((index) => (index + direction + steps.length) % steps.length);
 
   return (
     <section className="section mechanism-section" id="chemistry">
       <div className="shell">
         <SectionHeading
           index="02"
-          eyebrow="The chemistry in four frames"
+          eyebrow="The chemistry, one step at a time"
           title="Follow the charge, not just the colour."
-          copy="This is the strongest science-fair explanation: light absorption → electron injection → external current → dye regeneration. [S1, S2]"
+          copy="Choose a stage. The explanation, electron route, simplified chemistry and judge-ready sentence update together."
         />
-        <div className="mechanism-track">
-          {steps.map((step) => (
-            <article className="mechanism-step" key={step.num}>
-              <div className={`mechanism-icon icon-${step.icon}`} aria-hidden="true">
+        <div className="mechanism-track" role="group" aria-label="Select a stage in the DSSC electron cycle">
+          {steps.map((step, index) => (
+            <button
+              className={`mechanism-step${activeIndex === index ? ' is-active' : ''}`}
+              type="button"
+              key={step.num}
+              aria-pressed={activeIndex === index}
+              onClick={() => setActiveIndex(index)}
+            >
+              <span className={`mechanism-icon icon-${step.icon}`} aria-hidden="true">
                 {step.icon === 'sun' && <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="11" /><path d="M32 5v11M32 48v11M5 32h11M48 32h11M13 13l8 8M43 43l8 8M51 13l-8 8M21 43l-8 8" /></svg>}
                 {step.icon === 'spark' && <svg viewBox="0 0 64 64"><path d="m35 5-17 28h13l-2 26 19-34H35l6-20Z" /><circle cx="13" cy="17" r="2" /><circle cx="52" cy="47" r="2" /></svg>}
                 {step.icon === 'circuit' && <svg viewBox="0 0 64 64"><path d="M9 17h12v30H9M55 17H43v30h12M21 32h7m8 0h7" /><path d="m28 22 8 10-8 10" /><circle cx="9" cy="17" r="3" /><circle cx="55" cy="47" r="3" /></svg>}
                 {step.icon === 'cycle' && <svg viewBox="0 0 64 64"><path d="M49 22a19 19 0 0 0-32-7l-5 5M15 42a19 19 0 0 0 32 7l5-5" /><path d="M12 10v10h10M52 54V44H42" /><text x="32" y="37" textAnchor="middle">I⁻</text></svg>}
-              </div>
-              <div className="mechanism-topline"><span>{step.num}</span><i /></div>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </article>
+              </span>
+              <span className="mechanism-topline"><span>{step.num}</span><i /></span>
+              <b className="mechanism-step-title">{step.title}</b>
+              <span className="mechanism-step-summary">{step.text}</span>
+              <span className="step-open-hint">{activeIndex === index ? 'CURRENT STEP' : 'TAP TO EXPLORE'} <span aria-hidden="true">↗</span></span>
+            </button>
           ))}
         </div>
+        <div className="electron-route" role="group" aria-label={`Select a stage in the electron route; current stage: ${active.route}`}>
+          {steps.map((step, index) => (
+            <button
+              className={`route-node${activeIndex === index ? ' is-current' : ''}${activeIndex > index ? ' is-passed' : ''}`}
+              type="button"
+              key={`route-${step.num}`}
+              aria-pressed={activeIndex === index}
+              onClick={() => setActiveIndex(index)}
+            >
+              <span>{step.num}</span><b>{step.route}</b>
+            </button>
+          ))}
+        </div>
+        <div className="mechanism-explainer" aria-live="polite">
+          <div className="mechanism-explainer-index"><span>STEP</span><b>{active.num}</b><small>OF 04</small></div>
+          <div className="mechanism-explainer-copy">
+            <span className="panel-kicker">WHAT HAPPENS INSIDE</span>
+            <h3>{active.title}</h3>
+            <p>{active.detail}</p>
+            <p className="hinglish-line"><b>Hinglish:</b> {active.hinglish}</p>
+          </div>
+          <div className="judge-line-box">
+            <span>JUDGE-READY LINE</span>
+            <p>{active.judgeLine}</p>
+            <code>{active.equation}</code>
+          </div>
+        </div>
+        <div className="mechanism-controls">
+          <button type="button" onClick={() => goTo(-1)}>← Previous stage</button>
+          <span>INTERACTIVE CYCLE / {activeIndex + 1} OF {steps.length}</span>
+          <button type="button" onClick={() => goTo(1)}>Next stage →</button>
+        </div>
         <div className="reaction-strip">
-          <span className="reaction-label">THE LOOP, SIMPLIFIED</span>
+          <span className="reaction-label">THE WHOLE LOOP</span>
           <p><b>light</b> → dye* → e⁻ into TiO₂ → external load → redox electrolyte → <b>dye restored</b></p>
-          <a href="#source-science">Read the source notes <span aria-hidden="true">↗</span></a>
+          <a href="#source-method">Read the source notes <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
@@ -325,7 +420,7 @@ function SignalDiagram() {
       </div>
       <div className="signal-foot">
         <span className="signal-caution">MEASURE FIRST</span>
-        <p>Verify the cell with a multimeter. Use a high-impedance buffer before the Arduino input; power the board from USB, never from the berry cell. [S3]</p>
+        <p>Verify the cell with a multimeter. Use a high-input-impedance buffer before A1 and power the board over USB. Arduino analogRead returns raw ADC counts—not lux—unless you calibrate the sensor. <a className="claim-source" href="#source-arduino">[S3]</a></p>
       </div>
     </div>
   );
@@ -451,6 +546,15 @@ function Dashboard() {
             <p className="simulation-note"><b>Honest demo:</b> light level changes this synthetic trace. Picking another berry only changes the line colour; no dye is ranked or assigned a made-up result.</p>
           </div>
         </div>
+        <details className="hardware-walkthrough">
+          <summary><span>HOW TO TURN THIS DEMO INTO A REAL DASHBOARD</span><b>Open the wiring + data steps <i aria-hidden="true">＋</i></b></summary>
+          <div className="hardware-walkthrough-body">
+            <div className="hardware-step"><span>01</span><div><b>Read the light sensor</b><p>Connect the LDR module’s analog output to A0. Arduino <code>analogRead</code> gives raw ADC counts, not lux; call the reading “relative light” unless calibrated. <a className="claim-source" href="#source-arduino">[S3]</a></p></div></div>
+            <div className="hardware-step"><span>02</span><div><b>Buffer the cell voltage</b><p>Confirm polarity and open-circuit voltage on a multimeter first. Use a high-input-impedance buffer before A1 and the correct common ground. Do not power the UNO from the cell.</p></div></div>
+            <div className="hardware-step"><span>03</span><div><b>Send a clean serial row</b><p>Have the Arduino output time, light count and buffered voltage as comma-separated fields, for example <code>milliseconds,adc_count,voltage_mV</code>. The browser mock-up does not read a USB serial port.</p></div></div>
+            <div className="hardware-step"><span>04</span><div><b>Test one condition at a time</b><p>Hold distance and cell area steady, switch from uncovered to covered, repeat the measurement, then graph the real readings in a serial plotter or laptop script. <a className="claim-source" href="#source-method">[S2]</a></p></div></div>
+          </div>
+        </details>
       </div>
     </section>
   );
@@ -550,9 +654,10 @@ function Investigation() {
             <p className="comparison-status" aria-live="polite">
               {readingCount === 0 ? 'No readings entered. Empty bars are intentional—not sample results.' : `${readingCount} student-entered reading${readingCount === 1 ? '' : 's'} · averages update as you type.`}
             </p>
-            <div className="power-note"><b>Voltage is not power.</b> Open-circuit voltage alone cannot give power. For a power comparison, use a known load and measure voltage across it and current through it: <code>P = V × I</code>. [S2]</div>
+            <div className="power-note"><b>Voltage is not power.</b> Open-circuit voltage alone cannot give power. For a power comparison, use a known load and measure voltage across it and current through it: <code>P = V × I</code>. <a className="claim-source" href="#source-method">[S2]</a></div>
           </div>
         </div>
+        <PowerCalculator />
         <div className="fair-test-strip">
           <span className="fair-test-title">HOLD THESE CONSTANT</span>
           <span>cell area</span><i />
@@ -562,6 +667,49 @@ function Investigation() {
           <span>meter range</span>
         </div>
         <p className="comparison-caveat">Report “best under our test conditions,” not “this fruit is always best.” Handmade-cell assembly differences can affect the result.</p>
+      </div>
+    </section>
+  );
+}
+
+function PowerCalculator() {
+  const [millivolts, setMillivolts] = useState('');
+  const [resistance, setResistance] = useState('');
+  const hasBothInputs = millivolts.trim() !== '' && resistance.trim() !== '';
+  const voltageValue = Number(millivolts);
+  const resistanceValue = Number(resistance);
+  const currentValue = voltageValue / resistanceValue;
+  const powerValue = voltageValue * voltageValue / resistanceValue;
+  const valid = hasBothInputs && Number.isFinite(voltageValue) && Number.isFinite(resistanceValue) && voltageValue >= 0 && voltageValue <= 2000 && resistanceValue > 0 && Number.isFinite(currentValue) && Number.isFinite(powerValue);
+  const currentMilliAmps = valid ? currentValue : null;
+  const powerMicroWatts = valid ? powerValue : null;
+  const tidy = (value: number) => Number(value.toPrecision(3)).toLocaleString('en-IN');
+
+  return (
+    <section className="power-calculator" aria-labelledby="power-calc-title">
+      <div className="power-calc-intro">
+        <span className="panel-kicker">THE POWER CHECK / LOADED CELL</span>
+        <h3 id="power-calc-title">Voltage becomes power only under load.</h3>
+        <p>Enter a voltage measured <b>across a known resistor connected to the cell</b>. The calculator uses Ohm’s law to infer current, then calculates power. Leave it blank until you have real readings.</p>
+        <div className="power-formula-large"><span>P = V × I</span><i>or</i><span>P = V² / R</span></div>
+        <p className="calc-warning"><b>Do not enter open-circuit voltage.</b> Voc is measured with no load, so it cannot tell you the cell’s power output.</p>
+      </div>
+      <div className="power-calc-workspace">
+        <div className="power-inputs">
+          <label>Measured voltage across load <span>mV</span>
+            <input type="number" min="0" max="2000" step="any" inputMode="decimal" value={millivolts} placeholder="e.g. your reading" onChange={(event: ChangeEvent<HTMLInputElement>) => setMillivolts(event.target.value)} />
+          </label>
+          <label>Load resistance <span>Ω</span>
+            <input type="number" step="any" inputMode="decimal" value={resistance} placeholder="resistor value" onChange={(event: ChangeEvent<HTMLInputElement>) => setResistance(event.target.value)} />
+          </label>
+        </div>
+        <div className="power-results" aria-live="polite">
+          <div><span>INFERRED CURRENT</span><b>{currentMilliAmps === null ? '—' : tidy(currentMilliAmps)}<small>mA</small></b><code>I = V / R</code></div>
+          <div><span>LOAD POWER</span><b>{powerMicroWatts === null ? '—' : tidy(powerMicroWatts)}<small>µW</small></b><code>P = V × I</code></div>
+        </div>
+        <p className="power-calc-status" role="status">
+          {!hasBothInputs ? 'Waiting for your measured loaded voltage and resistor value.' : !valid ? 'Enter a voltage from 0 to 2000 mV and a resistance greater than 0 Ω.' : 'Calculated from your inputs only; this is not a predicted or measured cell result.'}
+        </p>
       </div>
     </section>
   );
@@ -584,11 +732,11 @@ function ExhibitionBoard() {
 
 function Showcase() {
   const buildSteps = [
-    { n: '01', title: 'Check the cell', text: 'Assemble a single pre-coated kit cell exactly as instructed. Find a measurable signal with the multimeter before adding code.' },
-    { n: '02', title: 'Extract the dye', text: 'Crush dark berries, filter the juice, and label each sample. Keep all cells and soaking times consistent.' },
-    { n: '03', title: 'Prove the response', text: 'Take repeated light and covered readings at the same distance. Avoid warming the cell with a strong lamp.' },
-    { n: '04', title: 'Connect the sensors', text: 'Read the LDR and buffered cell voltage with the Arduino. Send readings to a laptop graph; USB powers the board.' },
-    { n: '05', title: 'Compare fairly', text: 'Test three dyes with three independent cells each, calculate the mean and show every repeat—not just the best one.' },
+    { n: '01', title: 'Check one cell first', text: 'Assemble a single pre-coated kit cell exactly as instructed.', detail: 'Connect the multimeter across the cell and confirm that the reading changes between light and shade. If there is no stable signal, re-check contact points and assembly before building the dashboard.', check: 'A repeatable voltage response is visible on the meter.' },
+    { n: '02', title: 'Prepare and label each dye', text: 'Crush dark berries, filter the juice, and label the extracts.', detail: 'Use separate, clean cups and filters for blackberry, blueberry and jamun. Keep soaking time, dye volume and electrode area the same. Do not eat any experimental samples.', check: 'Each sample has a clear label and a recorded soak time.' },
+    { n: '03', title: 'Take controlled readings', text: 'Change light, not several variables at once.', detail: 'Keep the same lamp or sunlight, distance, cell angle and test duration. Measure uncovered and covered conditions, let the cell cool between lamp tests, and repeat each dye with independent cells.', check: 'Your notebook has all trials, conditions and units—not only the best value.' },
+    { n: '04', title: 'Add the sensor dashboard', text: 'Read the LDR and buffered voltage; send serial data over USB.', detail: 'The LDR gives raw ADC counts, not lux by default. The DSSC needs a high-input-impedance buffer and a multimeter check. USB powers the UNO; the berry cell does not.', check: 'Light counts and buffered voltage move in the expected direction when you cover the setup.' },
+    { n: '05', title: 'Compare and explain', text: 'Show three independent cells per dye and calculate averages.', detail: 'Plot every repeat, state the test conditions, and discuss assembly variation. Say “best under our conditions,” not “this dye is always best.” Use voltage across a known load if you want to compare power.', check: 'Judges can see your method, raw readings, mean and limitations.' },
   ];
 
   return (
@@ -598,22 +746,26 @@ function Showcase() {
           index="05"
           eyebrow="From workbench to exhibition table"
           title="Build in this order. Show the evidence."
-          copy="Prove a working cell first, then add sensors and code. That keeps the project chemistry-led instead of making the dashboard a decoration."
+          copy="Open each step for the practical action and a quick check. Prove a working cell first, then add sensors and code; that keeps the project chemistry-led."
         />
         <div className="showcase-grid">
           <div className="build-track">
-            {buildSteps.map((step) => (
-              <article className="build-step" key={step.n}>
-                <span className="build-step-num">{step.n}</span>
-                <div><h3>{step.title}</h3><p>{step.text}</p></div>
-              </article>
+            {buildSteps.map((step, index) => (
+              <details className="build-step" key={step.n} open={index === 0}>
+                <summary>
+                  <span className="build-step-num">{step.n}</span>
+                  <span className="build-step-copy"><b>{step.title}</b><span>{step.text}</span></span>
+                  <span className="build-step-toggle" aria-hidden="true">＋</span>
+                </summary>
+                <div className="build-step-body"><p>{step.detail}</p><div><b>READY TO MOVE ON WHEN</b><span>{step.check}</span></div></div>
+              </details>
             ))}
           </div>
           <ExhibitionBoard />
         </div>
         <div className="safety-strip">
           <div className="safety-symbol" aria-hidden="true">!</div>
-          <div><span className="panel-kicker">SAFETY & CLAIMS</span><p>Wear eye protection and gloves; a teacher supervises electrolyte handling and any heat-treatment step. Do not eat the samples. Keep the cell cool. A small classroom DSSC is for measurement—not phone charging or lighting an LED as a guaranteed outcome. [S1]</p></div>
+          <div><span className="panel-kicker">SAFETY & CLAIMS</span><p>Wear eye protection and gloves; a teacher supervises electrolyte handling and any heat-treatment step. Do not eat the samples. Keep the cell cool. A small classroom DSSC is for measurement—not phone charging or lighting an LED as a guaranteed outcome. <a className="claim-source" href="#source-science">[S1]</a></p></div>
           <a className="text-link" href="#sources">Source notes <span aria-hidden="true">↗</span></a>
         </div>
       </div>
@@ -739,11 +891,11 @@ function SourcesSection() {
               <span className="source-code">S1</span>
               <div><h3>NISE Network · DSSC Facilitator Guide</h3><p>Cell materials, assembly overview and safety guidance for a dye-sensitized solar cell activity.</p><a href={links.nisenet} target="_blank" rel="noreferrer">Open facilitator guide <span aria-hidden="true">↗</span></a></div>
             </article>
-            <article className="source-entry">
+            <article className="source-entry" id="source-method">
               <span className="source-code">S2</span>
               <div><h3>Vanderbilt Young Scientist Journal · DSSC study</h3><p>Explains dye excitation, electron injection into TiO₂, redox regeneration and why performance comparisons need controlled conditions.</p><a href={links.vanderbilt} target="_blank" rel="noreferrer">Open student research article <span aria-hidden="true">↗</span></a></div>
             </article>
-            <article className="source-entry">
+            <article className="source-entry" id="source-arduino">
               <span className="source-code">S3</span>
               <div><h3>Arduino · analogRead reference</h3><p>Official reference for reading analog input values on an Arduino-compatible board.</p><a href={links.arduino} target="_blank" rel="noreferrer">Open Arduino documentation <span aria-hidden="true">↗</span></a></div>
             </article>
